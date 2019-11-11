@@ -1,0 +1,28 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <!--    数据库连接配置文件，并从database.properties导入相关设置-->
+
+    <!--    其实现在这种方法是不推荐使用的，在这里只是演示如何使用这种方法读取properties里的属性-->
+    <!--    主要的原理是：Spring容器初始化的时候，会读取xml或者annotation对Bean进行初始化-->
+    <!--    初始化的时候会对配置的${pname}进行替换，根据我们Properties中配置的进行替换，从而实现表达式的替换操作-->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>properties/database.properties</value>
+        </property>
+    </bean>
+
+    <!--    推荐的数据源配置方式，使用了连接池技术   -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxActive" value="${jdbc.maxActive}"/>
+        <property name="maxIdle" value="${jdbc.maxIdle}"/>
+        <property name="maxWait" value="${jdbc.maxWait}"/>
+    </bean>
+
+</beans>

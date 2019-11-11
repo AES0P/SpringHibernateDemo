@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<!--        Hibernate 映射文件    -->
+
+<!-- package声明Stock类所在的包，如果不这么写则在class中需要指明Stock类所在的包,schema指数据库模式一个模式下可以有多张表-->
+<hibernate-mapping package="com.hzero.demo.spring.stock.model.Stock">
+
+    <!-- class类映射一个pojo(实体/vo)类:-->
+    <!-- 提供了公共的无参构造方法（通过反射产生对象），属性用private修饰, 并且生成对应的get/set方法，-->
+    <!-- 类不能用final修饰，因为hibernate会产生代理类（cglib）, 类需要指明标识，name表示Stock类名。table表名，如果不写是类名 -->
+    <class name="com.hzero.demo.spring.stock.model.Stock" table="stock" catalog="hzerodb">
+
+        <!-- id表示实体类的标识（OID），对应数据库表中主键 -->
+        <id name="stockId" type="java.lang.Long"><!-- type  如果不写则hibernate可以找到对应Stock类的属性的类型-->
+            <!--length 数据库表中对应数据类型的长度，如果不写则由默认数据长度-->
+            <column name="STOCK_ID"/><!--column 对应数据库表的列名，不写则必须列名数据库一致-->
+            <generator class="identity"/> <!--generator 主键生成策略，native根据底层数据库能力选择identity或者中一个 -->
+        </id>
+
+        <!-- 实体类的属性设置 -->
+        <property name="stockCode" type="string">
+            <column name="STOCK_CODE" length="10" not-null="true" unique="true"/>
+        </property>
+        <property name="stockName" type="string">
+            <column name="STOCK_NAME" length="20" not-null="true" unique="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

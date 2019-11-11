@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+    <!-- Hibernate session factory -->
+
+    <!--   spring4.3.2及以上需要 hibernate5版本支持  -->
+    <!--    这个 LocalSessionFactoryBean 中设置一个共享的 Hibernate SessionFactory 在一个 Spring 应用程序上下文-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop><!--设置方言dialect为mysql-->
+                <prop key="hibernate.show_sql">true</prop><!--显示执行的SQL语句-->
+            </props>
+        </property>
+
+        <property name="mappingResources">
+            <list>
+                <value>/hibernate/Stock.hbm.xml</value>
+            </list>
+        </property>
+
+    </bean>
+
+    <!--配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <!-- 开启事务扫描，采用注解方式 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+</beans>
